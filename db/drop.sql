@@ -1,0 +1,10 @@
+DROP INDEX IF EXISTS IX_card_slot_id;
+DROP INDEX IF EXISTS IX_slot_shelf_id;
+DROP INDEX IF EXISTS IX_shelf_router_id;
+DROP INDEX IF EXISTS IX_router_site_id;
+
+DROP TABLE IF EXISTS card;
+DROP TABLE IF EXISTS slot;
+DROP TABLE IF EXISTS shelf;
+DROP TABLE IF EXISTS router;
+DROP TABLE IF EXISTS network_site;

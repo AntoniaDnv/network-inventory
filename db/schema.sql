@@ -1,4 +1,4 @@
-CREATE TABLE network_site(
+CREATE TABLE IF NOT EXISTS network_site(
 id  BIGINT  AUTO_INCREMENT,
 site_code VARCHAR(20) NOT NULL,
 name VARCHAR(120) NOT NULL,
@@ -18,7 +18,7 @@ CONSTRAINT CK_network_site_status CHECK (status IN ('ACTIVE', 'PLANNED', 'DECOMM
 
 );
 
-CREATE TABLE router(
+CREATE TABLE IF NOT EXISTS router(
 id BIGINT AUTO_INCREMENT,
 site_id BIGINT NOT NULL,
 hostname VARCHAR(100) NOT NULL,
@@ -40,7 +40,7 @@ CONSTRAINT CK_router_status CHECK (status IN ('IN_SERVICE','MAINTENANCE','SPARE'
 
 );
 
-CREATE TABLE shelf(
+CREATE TABLE IF NOT EXISTS shelf(
 id BIGINT AUTO_INCREMENT,
 router_id BIGINT NOT NULL,
 shelf_number INT NOT NULL,
@@ -59,7 +59,7 @@ CONSTRAINT CK_shelf_total_slots CHECK (total_slots > 0)
 
 );
 
-CREATE TABLE slot(
+CREATE TABLE IF NOT EXISTS slot(
 id BIGINT AUTO_INCREMENT,
 shelf_id BIGINT NOT NULL,
 slot_number INT NOT NULL, 
@@ -75,7 +75,7 @@ CONSTRAINT CK_slot_status CHECK(status  IN ('EMPTY','OCCUPIED','RESERVED','FAULT
 
 );
 
-CREATE TABLE card(
+CREATE TABLE IF NOT EXISTS card(
 id BIGINT AUTO_INCREMENT,
 slot_id BIGINT NULL,
 part_number VARCHAR(60) NOT NULL,
@@ -94,3 +94,12 @@ CONSTRAINT UQ_card_serial_number UNIQUE (serial_number),
 CONSTRAINT CK_card_port_count CHECK (port_count >= 0),
 CONSTRAINT CK_card_status CHECK(status IN('INSTALLED','IN_STOCK','FAULTY','RETIRED'))
 );
+
+CREATE INDEX IF NOT EXISTS IX_router_site_id
+ON router(site_id);
+CREATE INDEX IF NOT EXISTS IX_shelf_router_id
+ON shelf(router_id);
+CREATE INDEX IF NOT EXISTS IX_slot_shelf_id
+ON slot(shelf_id);
+CREATE INDEX IF NOt EXISTS IX_card_slot_id
+ON card(slot_id);

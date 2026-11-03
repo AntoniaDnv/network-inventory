@@ -5,9 +5,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -15,6 +15,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 
 
 @Entity 
@@ -25,8 +26,9 @@ public class Router {
    @Column(name = "id")
    private  Long id; 
 
-   @Column(name="site_id", nullable = false)
-   private Long siteId;
+   @ManyToOne(fetch = FetchType.LAZY, optional = false)
+   @JoinColumn(name = "site_id", nullable = false)
+   private NetworkSite site;
 
    @Column(name="hostname", nullable = false, length = 100, unique = true)
    private String hostName;
@@ -61,7 +63,6 @@ public class Router {
    private LocalDateTime updatedAt;
 
    public Long getId(){return  id;}
-   public void setId(Long id){this.id = id;}
 
     public String getHostName(){ return hostName;}
     public void setHostName(String hostName){this.hostName = hostName;}
@@ -82,8 +83,12 @@ public class Router {
     public void setSoftwareVersion(String softwareVersion){this.softwareVersion = softwareVersion;}
 
     public RouterStatus getStatus(){return status;}
+    public void setStatus(RouterStatus status){this.status = status;}
 
     public LocalDateTime getCreatedAt(){return createdAt;}
     public LocalDateTime getUpdatedAt(){return updatedAt;}
+   
+    public NetworkSite getSite(){return site;}
+    public void setSite(NetworkSite site){this.site = site;}
 
 }

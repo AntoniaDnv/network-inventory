@@ -2,19 +2,29 @@ package com.inventory.network_inventory.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.inventory.network_inventory.entity.enums.SiteStatus;
+
 @Entity 
-@Table(name="network_site")
+@Table(name="network_site", uniqueConstraints={
+   @UniqueConstraint(name="UQ_network_site_site_code", columnNames = {"site_code"})
+})
 public class NetworkSite {
    @Id 
    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,8 +52,9 @@ public class NetworkSite {
    @Column(name = "longitude", precision = 9, scale = 6)
    private BigDecimal longitude;
 
+   @Enumerated(EnumType.STRING)
    @Column(name = "status", nullable = false, length = 20)
-   private String status;
+   private SiteStatus status;
    @CreationTimestamp
    @Column(
       name = "created_at",
@@ -57,6 +68,9 @@ public class NetworkSite {
       
       name = "updated_at")
    private LocalDateTime updatedAt;
+   
+   @OneToMany(mappedBy = "site")
+   private List<Router> routers = new ArrayList<>();
 
    public  Long getId(){return id;}
    public void setId(Long id){
@@ -93,10 +107,10 @@ public class NetworkSite {
    public void setLongitude(BigDecimal longitude){
       this.longitude = longitude;
    }
-      public String getStatus(){return  status;}
-   public void setStatus(String status){
-      this.status = status;
-   }
+   //    public String getStatus(){return  status;}
+   // public void setStatus(String status){
+   //    this.status = status;
+   // }
    public LocalDateTime getCreatedAt(){return createdAt;}
    public void setCreatedAt(LocalDateTime createdAt){
       this.createdAt = createdAt;

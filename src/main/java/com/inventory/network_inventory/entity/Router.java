@@ -7,8 +7,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -19,7 +24,10 @@ import jakarta.persistence.FetchType;
 
 
 @Entity 
-@Table (name="router")
+@Table (name="router", uniqueConstraints = {
+    @UniqueConstraint(name="UQ_router_hostname", columnNames =  {"hostname"}),
+    @UniqueConstraint(name="UQ_router_serial_number", columnNames = {"serial_number"})
+})
 public class Router {
     @Id 
    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +38,8 @@ public class Router {
    @JoinColumn(name = "site_id", nullable = false)
    private NetworkSite site;
 
-   @Column(name="hostname", nullable = false, length = 100, unique = true)
+   
+   @Column(name="hostname", nullable = false, length = 100)
    private String hostName;
    
    @Column(name="vendor", nullable = false, length = 60)
@@ -39,7 +48,7 @@ public class Router {
    @Column (name="model", length = 60, nullable = false)
    private String model;
 
-   @Column (name="serial_number", length=60, nullable = false, unique = true)
+   @Column (name="serial_number", length=60, nullable = false)
    private String serialNumber;
 
    @Column(name="management_ip", length=45)
@@ -61,6 +70,10 @@ public class Router {
    @UpdateTimestamp
    @Column(name = "updated_at")
    private LocalDateTime updatedAt;
+
+  
+   @OneToMany(mappedBy = "router")
+   private List<Shelf> shelfs = new ArrayList<>();
 
    public Long getId(){return  id;}
 

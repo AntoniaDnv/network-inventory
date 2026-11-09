@@ -31,7 +31,7 @@ public class NetworkSite {
    @Column(name = "id")
    private  Long id;
     
-   @Column(name = "site_code", nullable = false, length = 20, unique = true)
+   @Column(name = "site_code", nullable = false, length = 20)
    private String siteCode;
 
    @Column(name = "name", nullable = false, length = 120)
@@ -107,10 +107,10 @@ public class NetworkSite {
    public void setLongitude(BigDecimal longitude){
       this.longitude = longitude;
    }
-   //    public String getStatus(){return  status;}
-   // public void setStatus(String status){
-   //    this.status = status;
-   // }
+      public SiteStatus getStatus(){return  status;}
+   public void setStatus(SiteStatus  status){
+      this.status = status;
+   }
    public LocalDateTime getCreatedAt(){return createdAt;}
    public void setCreatedAt(LocalDateTime createdAt){
       this.createdAt = createdAt;
@@ -119,4 +119,5 @@ public class NetworkSite {
    public void setUpdatedAt(LocalDateTime updatedAt){
       this.updatedAt = updatedAt;
    }
+   public List<Router> getRouters(){return routers;}
 }

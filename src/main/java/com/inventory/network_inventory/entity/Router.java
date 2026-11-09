@@ -73,7 +73,8 @@ public class Router {
 
   
    @OneToMany(mappedBy = "router")
-   private List<Shelf> shelfs = new ArrayList<>();
+   private List<Shelf> shelves = new ArrayList<>();
+    public List<Shelf> getShelves (){return  shelves;}
 
    public Long getId(){return  id;}
 
@@ -104,4 +105,5 @@ public class Router {
     public NetworkSite getSite(){return site;}
     public void setSite(NetworkSite site){this.site = site;}
 
+     
 }
